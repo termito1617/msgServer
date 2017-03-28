@@ -1,19 +1,27 @@
 package com.company;
 
+import javafx.util.Pair;
+
 import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 /**
  * Created by vlad on 01.03.2017.
  */
 public class Friends {
+    private final int MAX_SIZE_DELETE_LIST = 1;
     private static Friends f = new Friends();
     private final String friendsPath = "E:\\friends.txt";
+    private List<Pair<Integer, Integer>> deleteList;
     private int graph[][];
     private int n;
 
 
     private Friends() {
+        deleteList = new ArrayList<>();
         upLoad();
     }
     private synchronized void upLoad() {
@@ -23,18 +31,42 @@ public class Friends {
             for (int j = 0; j < n; j++)
                 graph[i][j] = 0;
 
+        File tmp = new File("E:\\tmp.txt");
+        File f   = new File(friendsPath);
         try {
-            Scanner scanner = new Scanner(new File(friendsPath));
+            if (!tmp.exists()) {
+                tmp.createNewFile();
+            }
 
+            Scanner scanner = new Scanner(f);
+            BufferedWriter br = new BufferedWriter(new FileWriter(tmp,false));
             while(scanner.hasNextInt()) {
                 int id1 = scanner.nextInt();
                 int id2 = scanner.nextInt();
                 graph[id1 - 1][id2 - 1] = 1;
                 graph[id2 - 1][id1 - 1] = 1;
+                if (deleteList.size() == 0 ||
+                        (!deleteList.contains(new Pair<>(id1, id2)) &&
+                        !deleteList.contains(new Pair<>(id2, id1)))) {
+                    br.append(id1 + " " + id2);
+                    br.newLine();
+                }
             }
-        } catch (FileNotFoundException e) {
+
+            br.flush();
+            scanner.close();
+            br.close();
+            if (deleteList.size() > 0) {
+
+                System.out.println(f.delete());
+                System.out.println(tmp.renameTo(f));
+            }
+            deleteList.clear();
+        } catch (IOException e) {
             e.printStackTrace();
             System.exit(-1);
+        } finally {
+
         }
     }
 
@@ -62,7 +94,10 @@ public class Friends {
     }
     public boolean isFriends(int id1, int id2) {
         if (id1 > n || id2 > n) upLoad();
-        return graph[id1 - 1][id2 - 1] == 1 ? true : false;
+        if (deleteList != null && (deleteList.contains(new Pair<>(id1, id2)) || deleteList.contains(new Pair<>(id2, id1))))
+            return false;
+
+        return graph[id1 - 1][id2 - 1] == 1;
     }
     public static Friends getInstance() {
         return f;
@@ -71,7 +106,11 @@ public class Friends {
         if (id > n) upLoad();
         int count = 0;
         for (int i = 0; i < n; i++) {
-            if (graph[id - 1][i] == 1) count++;
+            if (graph[id - 1][i] == 1) {
+                count++;
+                if (deleteList != null && (deleteList.contains(new Pair<>(id, i)) || deleteList.contains(new Pair<>(i, id))))
+                    count--;
+            }
         }
         int arr[] = new int[count];
 
@@ -82,5 +121,18 @@ public class Friends {
             }
         }
         return arr;
+    }
+    public void delete(int id1, int id2) {
+        if (id1 <= n && id2 <= n && id1 >= 1 && id2 >= 1) {
+            graph[id1 - 1][id2 - 1] = 0;
+            graph[id2 - 1][id1 - 1] = 0;
+        }
+        Pair<Integer, Integer> p = new Pair<>(id1, id2);
+        deleteList.add(p);
+        if (deleteList.size() >= MAX_SIZE_DELETE_LIST) {
+
+            upLoad();
+
+        }
     }
 }
