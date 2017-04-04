@@ -33,7 +33,7 @@ public class Users {
             return lineNumber;
 
         }catch(IOException e){
-            e.printStackTrace();
+            GuiServerStatus.getInstance().addToLog("[MessageManager: ERROR]   " + "ошибка инициалищации(чтения)");
             System.exit(-1);
             return 0;
         }
@@ -63,12 +63,12 @@ public class Users {
             br.newLine();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            GuiServerStatus.getInstance().addToLog("[Users: ERROR]   " + "Ошибка записи");
         } finally{
             try {
                 br.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                GuiServerStatus.getInstance().addToLog("[Users: ERROR]   " + "Ошибка закрытия потока");
             }
         }
         currentID++;
@@ -92,7 +92,7 @@ public class Users {
             return null;
         }
         catch (IOException e) {
-            e.printStackTrace();
+            GuiServerStatus.getInstance().addToLog("[Users: ERROR]   " + "Ошибка чтения");
             return null;
         }
     }
@@ -136,7 +136,7 @@ public class Users {
             return null;
         }
         catch (IOException e) {
-            e.printStackTrace();
+            GuiServerStatus.getInstance().addToLog("[Users: ERROR]   " + "Ошибка записи");
             return null;
         }
     }
@@ -162,7 +162,7 @@ public class Users {
             return users;
         }
         catch (IOException e) {
-            e.printStackTrace();
+            GuiServerStatus.getInstance().addToLog("[Users: ERROR]   " + "Ошибка записи");
             return null;
         }
     }

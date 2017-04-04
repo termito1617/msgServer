@@ -43,13 +43,17 @@ public class Friends {
             while(scanner.hasNextInt()) {
                 int id1 = scanner.nextInt();
                 int id2 = scanner.nextInt();
-                graph[id1 - 1][id2 - 1] = 1;
-                graph[id2 - 1][id1 - 1] = 1;
+
                 if (deleteList.size() == 0 ||
                         (!deleteList.contains(new Pair<>(id1, id2)) &&
                         !deleteList.contains(new Pair<>(id2, id1)))) {
                     br.append(id1 + " " + id2);
                     br.newLine();
+                    graph[id1 - 1][id2 - 1] = 1;
+                    graph[id2 - 1][id1 - 1] = 1;
+                } else {
+                    graph[id1 - 1][id2 - 1] = 0;
+                    graph[id2 - 1][id1 - 1] = 0;
                 }
             }
 
@@ -58,15 +62,13 @@ public class Friends {
             br.close();
             if (deleteList.size() > 0) {
 
-                System.out.println(f.delete());
-                System.out.println(tmp.renameTo(f));
+                f.delete();
+                tmp.renameTo(f);
             }
             deleteList.clear();
         } catch (IOException e) {
-            e.printStackTrace();
+            GuiServerStatus.getInstance().addToLog("[Friends: ERROR]   " + "upload error");
             System.exit(-1);
-        } finally {
-
         }
     }
 
@@ -79,12 +81,12 @@ public class Friends {
             br.newLine();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            GuiServerStatus.getInstance().addToLog("[Friends: ERROR]   " + "add error  + id1: " + id1 + "    id2: " + id2);
         } finally{
             try {
                 br.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                GuiServerStatus.getInstance().addToLog("[Friends: ERROR]   " + "add error(Закрытие файла)  + id1: " + id1 + "    id2: " + id2);
             }
         }
         if (id1 <= n && id2 <= n) {
@@ -130,7 +132,6 @@ public class Friends {
         Pair<Integer, Integer> p = new Pair<>(id1, id2);
         deleteList.add(p);
         if (deleteList.size() >= MAX_SIZE_DELETE_LIST) {
-
             upLoad();
 
         }

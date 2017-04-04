@@ -29,6 +29,9 @@ public class MessageManager {
             try {
                 file.createNewFile();
             } catch (IOException e) {
+                GuiServerStatus.getInstance().addToLog("[MessageManager: ERROR]   " + "файл не создан  + id1: " +
+                        idFrom + "    idTo: " + idTo);
+
                 return false;
             }
         }
@@ -39,6 +42,8 @@ public class MessageManager {
             bw.newLine();
             bw.close();
         } catch (IOException e) {
+            GuiServerStatus.getInstance().addToLog("[MessageManager: ERROR]   " + "ошибка записи  + id1: " +
+                    idFrom + "    idTo: " + idTo);
             return false;
         }
         return true;
@@ -58,6 +63,8 @@ public class MessageManager {
         try {
             reader = new BufferedReader(new FileReader(path + "\\" + idTo + ".txt"));
         } catch (FileNotFoundException e) {
+            GuiServerStatus.getInstance().addToLog("[MessageManager: ERROR]   " + "файл не найден  + id1: " +
+                    idFrom + "    idTo: " + idTo);
             return null;
         }
 
@@ -69,6 +76,8 @@ public class MessageManager {
             reader.close();
             return msgList;
         } catch (IOException e) {
+            GuiServerStatus.getInstance().addToLog("[MessageManager: ERROR]   " + "ошибка чтения  + id1: " +
+                    idFrom + "    idTo: " + idTo);
             return null;
         }
 
