@@ -13,7 +13,7 @@ public class Users {
     public static final int SEARCH_BY_ID = 3;
     public static final int SEARCH_BY_NAME = 4;
     private static Users users = new Users();
-    private final String usersPath = "E:\\users.txt";
+    private final String usersPath = "users.txt";
     private int currentID;
 
     private Users() {
@@ -23,6 +23,7 @@ public class Users {
     private int initID() {
         try{
             File myFile =new File(usersPath);
+            if (!myFile.exists()) myFile.createNewFile();
             FileReader fileReader = new FileReader(myFile);
             LineNumberReader lineNumberReader = new LineNumberReader(fileReader);
             int lineNumber = 0;

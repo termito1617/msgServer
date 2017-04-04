@@ -19,10 +19,10 @@ public class ApplicationsToFriend {
         this.id = id;
         idList = null;
         msgsList = null;
-        path = "E:\\MyICQserver\\ApplicationsToFriend\\" + id;
-        File f = new File("E:\\MyICQserver");
+        path = "MyICQserver\\ApplicationsToFriend\\" + id;
+        File f = new File("MyICQserver");
         if (!f.exists()) f.mkdir();
-        f = new File("E:\\MyICQserver\\ApplicationsToFriend");
+        f = new File("MyICQserver\\ApplicationsToFriend");
         if (!f.exists()) f.mkdir();
     }
 

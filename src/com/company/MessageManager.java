@@ -14,10 +14,10 @@ public class MessageManager {
 
     public MessageManager(int idFrom) {
         this.idFrom = idFrom;
-        path = "E:\\MyICQserver\\Messages\\" + idFrom;
+        path = "MyICQserver\\Messages\\" + idFrom;
         File f = new File("E:\\MyICQserver");
         if (!f.exists()) f.mkdir();
-        f = new File("E:\\MyICQserver\\Messages");
+        f = new File("MyICQserver\\Messages");
         if (!f.exists()) f.mkdir();
         f = new File(path);
         if (!f.exists()) f.mkdir();

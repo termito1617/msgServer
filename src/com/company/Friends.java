@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class Friends {
     private final int MAX_SIZE_DELETE_LIST = 1;
     private static Friends f = new Friends();
-    private final String friendsPath = "E:\\friends.txt";
+    private final String friendsPath = "friends.txt";
     private List<Pair<Integer, Integer>> deleteList;
     private int graph[][];
     private int n;
@@ -22,8 +22,18 @@ public class Friends {
 
     private Friends() {
         deleteList = new ArrayList<>();
+        File f = new File(friendsPath);
+        try {
+            if (!f.exists()) {
+                f.createNewFile();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         upLoad();
+
     }
+
     private synchronized void upLoad() {
         n = Users.getInstance().getCurrentID();
         graph = new int[n][n];
@@ -31,7 +41,7 @@ public class Friends {
             for (int j = 0; j < n; j++)
                 graph[i][j] = 0;
 
-        File tmp = new File("E:\\tmp.txt");
+        File tmp = new File("tmp.txt");
         File f   = new File(friendsPath);
         try {
             if (!tmp.exists()) {
@@ -68,7 +78,6 @@ public class Friends {
             deleteList.clear();
         } catch (IOException e) {
             GuiServerStatus.getInstance().addToLog("[Friends: ERROR]   " + "upload error");
-            System.exit(-1);
         }
     }
 
