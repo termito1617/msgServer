@@ -77,7 +77,7 @@ public class Friends {
             }
             deleteList.clear();
         } catch (IOException e) {
-            GuiServerStatus.getInstance().addToLog("[Friends: ERROR]   " + "upload error");
+            GuiServerStatus.getInstance().addToLog("[Friends: ERROR]   " + "upload error  ");
         }
     }
 
