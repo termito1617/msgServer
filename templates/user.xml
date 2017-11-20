@@ -1,0 +1,3 @@
+<templateSet group="user">
+  <template name="sop" value="System.out.print();" toReformat="false" toShortenFQNames="true" />
+</templateSet>
